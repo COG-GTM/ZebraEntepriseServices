@@ -74,7 +74,7 @@ public class DWProfileChecker extends DWProfileBase {
         broadcastReceiverThreadLooper = broadcastReceiverThread.getLooper();
         broadcastReceiverHandler = new Handler(broadcastReceiverThreadLooper);
 
-        mContext.registerReceiver(mBroadcastReceiver, intentFilter, null, broadcastReceiverHandler);
+        DWReceiverRegistration.registerExported(mContext, mBroadcastReceiver, intentFilter, broadcastReceiverHandler);
 
         /*
         Ask for DataWedge profile list

@@ -105,7 +105,7 @@ public class DWScanReceiver {
                 mBroadcastReceiverThreadLooper = mBroadcastReceiverThread.getLooper();
                 mBroadcastReceiverHandler = new Handler(mBroadcastReceiverThreadLooper);
 
-                mContext.registerReceiver(mMessageReceiver, mIntentFilter, null, mBroadcastReceiverHandler);
+                DWReceiverRegistration.registerExported(mContext, mMessageReceiver, mIntentFilter, mBroadcastReceiverHandler);
             } catch (Exception e) {
                 e.printStackTrace();
                 cleanReceiverThread();
@@ -113,7 +113,7 @@ public class DWScanReceiver {
         }
         else
         {
-            mContext.registerReceiver(mMessageReceiver, mIntentFilter);
+            DWReceiverRegistration.registerExported(mContext, mMessageReceiver, mIntentFilter, null);
         }
         // Register the internal broadcast receiver when we are alive
     }

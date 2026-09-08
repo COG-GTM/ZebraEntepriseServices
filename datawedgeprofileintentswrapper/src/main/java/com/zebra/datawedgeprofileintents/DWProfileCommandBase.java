@@ -79,7 +79,7 @@ public class DWProfileCommandBase extends DWProfileBase {
         broadcastReceiverHandler = new Handler(broadcastReceiverThreadLooper);
 
         //mContext.registerReceiver(mBroadcastReceiver, intentFilter);
-        mContext.registerReceiver(mBroadcastReceiver, intentFilter, null, broadcastReceiverHandler);
+        DWReceiverRegistration.registerExported(mContext, mBroadcastReceiver, intentFilter, broadcastReceiverHandler);
      }
 
     protected void sendDataWedgeIntentWithExtraRequestResult(String action, String extraKey, String extraValue)

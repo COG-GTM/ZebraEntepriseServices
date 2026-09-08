@@ -100,7 +100,7 @@ public class DWStatusScanner {
 
         IntentFilter filter = new IntentFilter();
         filter.addAction(DataWedgeConstants.NOTIFICATION_ACTION);
-        mContext.registerReceiver(mStatusBroadcastReceiver, filter, null, broadcastReceiverHandler);
+        DWReceiverRegistration.registerExported(mContext, mStatusBroadcastReceiver, filter, broadcastReceiverHandler);
     }
 
     void unRegisterNotificationReceiver() {

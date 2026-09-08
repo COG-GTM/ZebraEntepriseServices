@@ -10,19 +10,19 @@ import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
-import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
-import static android.app.PendingIntent.FLAG_UPDATE_CURRENT;
 import static androidx.core.app.NotificationCompat.PRIORITY_MIN;
 import static com.zebra.enterpriseservices.RESTHostServiceConstants.PRINT_SERVER_PORT;
 
 public class RESTHostService extends Service {
     private static final int SERVICE_ID = 2545;
+    private static final int PENDING_INTENT_FLAGS = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
 
     private NotificationManager mNotificationManager;
     private Notification mNotification;
@@ -67,10 +67,10 @@ public class RESTHostService extends Service {
                     getApplicationContext(),
                     0,
                     mainActivityIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    PENDING_INTENT_FLAGS);
 
             // Create the Foreground Service
-            String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? createNotificationChannel(mNotificationManager) : "";
+            String channelId = createNotificationChannel(mNotificationManager);
 
             NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, channelId);
             mNotification = notificationBuilder.setOngoing(true)
@@ -86,10 +86,17 @@ public class RESTHostService extends Service {
             TaskStackBuilder localTaskStackBuilder = TaskStackBuilder.create(this);
             localTaskStackBuilder.addParentStack(RESTHostServiceActivity.class);
             localTaskStackBuilder.addNextIntent(mainActivityIntent);
-            notificationBuilder.setContentIntent(localTaskStackBuilder.getPendingIntent(0, FLAG_UPDATE_CURRENT));
+            notificationBuilder.setContentIntent(localTaskStackBuilder.getPendingIntent(0, PENDING_INTENT_FLAGS));
 
             // Start foreground service
-            startForeground(SERVICE_ID, mNotification);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
+            {
+                startForeground(SERVICE_ID, mNotification, ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
+            }
+            else
+            {
+                startForeground(SERVICE_ID, mNotification);
+            }
 
             // Launch web server here
             if(mRESTServer != null)
@@ -127,7 +134,7 @@ public class RESTHostService extends Service {
                 mRESTServer = null;
             }
             
-            stopForeground(true);
+            stopForeground(STOP_FOREGROUND_REMOVE);
             logD("stopService:Service stopped without error.");
         }
         catch(Exception e)
@@ -139,7 +146,6 @@ public class RESTHostService extends Service {
 
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private String createNotificationChannel(NotificationManager notificationManager){
         NotificationChannel channel = new NotificationChannel(getString(R.string.zebra_enterprise_services_channel_id), getString(R.string.zebra_enterprise_services_channel_name), NotificationManager.IMPORTANCE_HIGH);
         // omitted the LED color
@@ -157,17 +163,9 @@ public class RESTHostService extends Service {
     public static void startService(Context context)
     {
         Intent myIntent = new Intent(context, RESTHostService.class);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
-            // Use start foreground service to prevent the runtime error:
-            // "not allowed to start service intent app is in background"
-            // to happen when running on OS >= Oreo
-            context.startForegroundService(myIntent);
-        }
-        else
-        {
-            context.startService(myIntent);
-        }
+        // Use start foreground service to prevent the runtime error:
+        // "not allowed to start service intent app is in background"
+        context.startForegroundService(myIntent);
     }
 
     public static void stopService(Context context)

@@ -10,11 +10,11 @@ ext {
 
 android {
     namespace "com.zebra.printconnectintentswrapper"
-    compileSdkVersion 32
+    compileSdk 35
 
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 32
+        minSdk 26
+        targetSdk 35
         versionCode 1
         versionName "1.2"
 
