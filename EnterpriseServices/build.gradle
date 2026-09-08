@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace "com.zebra.enterpriseservices"
     compileSdkVersion 32
 
     defaultConfig {

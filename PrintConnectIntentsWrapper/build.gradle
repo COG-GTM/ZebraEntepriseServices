@@ -9,6 +9,7 @@ ext {
 }
 
 android {
+    namespace "com.zebra.printconnectintentswrapper"
     compileSdkVersion 32
 
     defaultConfig {

@@ -9,6 +9,7 @@ ext {
 }
 
 android {
+    namespace "com.zebra.datawedgeprofileintents"
     compileSdkVersion 32
 
     defaultConfig {
