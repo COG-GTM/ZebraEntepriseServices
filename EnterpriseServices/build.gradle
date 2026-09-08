@@ -35,7 +35,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation project(":printconnectintentswrapper")
     //api 'com.zebra.printconnectintentswrapper:printconnectintentswrapper:1.2.739'
-    api 'org.nanohttpd:nanohttpd:2.3.1'
+    api 'org.nanohttpd:nanohttpd:2.3.1' // latest release on Maven Central (2016-08); upstream unmaintained, see MBA-2292
     implementation project(':datawedgeprofileintentswrapper')
     //api 'com.zebra.datawedgeprofileintentswrapper:datawedgeprofileintentswrapper:6.7'
 }
