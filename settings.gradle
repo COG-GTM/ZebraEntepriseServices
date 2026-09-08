@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 }
 
 include ':EnterpriseServices' ,':datawedgeprofileintentswrapper',":printconnectintentswrapper"
+project(':printconnectintentswrapper').projectDir = file('PrintConnectIntentsWrapper')
