@@ -23,6 +23,9 @@ import static com.zebra.enterpriseservices.RESTHostServiceConstants.PRINT_SERVER
 
 public class RESTHostService extends Service {
     private static final int SERVICE_ID = 2545;
+    private static final int PENDING_INTENT_FLAGS = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+            ? FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
+            : FLAG_UPDATE_CURRENT;
 
     private NotificationManager mNotificationManager;
     private Notification mNotification;
@@ -67,7 +70,7 @@ public class RESTHostService extends Service {
                     getApplicationContext(),
                     0,
                     mainActivityIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    PENDING_INTENT_FLAGS);
 
             // Create the Foreground Service
             String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? createNotificationChannel(mNotificationManager) : "";
@@ -86,7 +89,7 @@ public class RESTHostService extends Service {
             TaskStackBuilder localTaskStackBuilder = TaskStackBuilder.create(this);
             localTaskStackBuilder.addParentStack(RESTHostServiceActivity.class);
             localTaskStackBuilder.addNextIntent(mainActivityIntent);
-            notificationBuilder.setContentIntent(localTaskStackBuilder.getPendingIntent(0, FLAG_UPDATE_CURRENT));
+            notificationBuilder.setContentIntent(localTaskStackBuilder.getPendingIntent(0, PENDING_INTENT_FLAGS));
 
             // Start foreground service
             startForeground(SERVICE_ID, mNotification);
