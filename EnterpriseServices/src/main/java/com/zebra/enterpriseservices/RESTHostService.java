@@ -63,11 +63,15 @@ public class RESTHostService extends Service {
         try
         {
             Intent mainActivityIntent = new Intent(this, RESTHostServiceActivity.class);
+            int pendingIntentFlags = FLAG_UPDATE_CURRENT;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                pendingIntentFlags |= PendingIntent.FLAG_IMMUTABLE;
+            }
             PendingIntent pendingIntent = PendingIntent.getActivity(
                     getApplicationContext(),
                     0,
                     mainActivityIntent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    pendingIntentFlags);
 
             // Create the Foreground Service
             String channelId = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ? createNotificationChannel(mNotificationManager) : "";
@@ -86,7 +90,7 @@ public class RESTHostService extends Service {
             TaskStackBuilder localTaskStackBuilder = TaskStackBuilder.create(this);
             localTaskStackBuilder.addParentStack(RESTHostServiceActivity.class);
             localTaskStackBuilder.addNextIntent(mainActivityIntent);
-            notificationBuilder.setContentIntent(localTaskStackBuilder.getPendingIntent(0, FLAG_UPDATE_CURRENT));
+            notificationBuilder.setContentIntent(localTaskStackBuilder.getPendingIntent(0, pendingIntentFlags));
 
             // Start foreground service
             startForeground(SERVICE_ID, mNotification);
