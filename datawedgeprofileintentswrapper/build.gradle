@@ -10,11 +10,11 @@ ext {
 
 android {
     namespace "com.zebra.datawedgeprofileintents"
-    compileSdk 35
+    compileSdk rootProject.ext.compileSdkVersion
 
     defaultConfig {
-        minSdk 26
-        targetSdk 35
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
 
