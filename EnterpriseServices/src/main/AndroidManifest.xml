@@ -6,8 +6,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CONNECTED_DEVICE"/>
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
     <queries>
         <package android:name="com.zebra.printconnect" />
@@ -21,7 +24,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.zebra.enterpriseservices.LicenceActivity"></activity>
+        <activity android:name="com.zebra.enterpriseservices.LicenceActivity"
+            android:exported="false" />
         <activity android:name="com.zebra.enterpriseservices.RESTHostServiceActivity"
             android:exported="true">
             <intent-filter>
@@ -32,7 +36,8 @@
         <service
             android:name="com.zebra.enterpriseservices.RESTHostService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true"
+            android:foregroundServiceType="connectedDevice" />
 
         <receiver
             android:name="com.zebra.enterpriseservices.RESTHostServiceBroadcastReceiverBootCompleted"

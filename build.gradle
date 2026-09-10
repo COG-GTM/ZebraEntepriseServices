@@ -3,6 +3,12 @@ plugins {
     id 'com.android.library' version '8.13.2' apply false
 }
 
+ext {
+    compileSdkVersion = 35
+    minSdkVersion = 26
+    targetSdkVersion = 35
+}
+
 task clean(type: Delete) {
     delete layout.buildDirectory
 }

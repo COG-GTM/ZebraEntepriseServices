@@ -10,6 +10,8 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import androidx.core.content.ContextCompat;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -76,7 +78,7 @@ public class RESTHostServiceWifiStateObserver {
                             mIPChangeObserver.onIPChanged(mIpAddress);
                 }
             };
-            mContext.registerReceiver(mNetworkStateBroadcastReceiver, filters);
+            ContextCompat.registerReceiver(mContext, mNetworkStateBroadcastReceiver, filters, ContextCompat.RECEIVER_NOT_EXPORTED);
         }
         else
         {
